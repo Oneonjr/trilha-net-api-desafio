@@ -1,12 +1,14 @@
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using TrilhaApiDesafio.Context;
+using Pomelo.EntityFrameworkCore.MySql;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<OrganizadorContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ConexaoPadrao")));
+var connectionStringMysql = builder.Configuration.GetConnectionString("ConexaoPadrao");
+builder.Services.AddDbContext<OrganizadorContext>(options => 
+    options.UseMySql(connectionStringMysql,ServerVersion.Parse("8.0.31 MySQL")));
 
 builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
